@@ -1,4 +1,4 @@
-const Admin      = require('../models').Admin;
+const User      = require('../models').User;
 const bcrypt     = require('bcrypt');
 const salt       = bcrypt.genSaltSync(10);
 const async      = require('async');
@@ -110,7 +110,7 @@ function login(req, res) {
     else {
         const email     = req.body.email;
         const password  = req.body.password;
-        Admin.findOne({where: {email: email}}).then(function (admin) {
+        User.findOne({where: {email: email}}).then(function (admin) {
             if (!admin) {
                 return db.sendError({code: 404, message: 'Authentication failed. User not exist.'}, res)
             } else {

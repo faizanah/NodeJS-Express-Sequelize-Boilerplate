@@ -4,7 +4,7 @@ const bcrypt     = require('bcrypt');
 const shortid    = require('shortid');
 const salt       = bcrypt.genSaltSync(10);
 const db         = require('../config/db');
-var params       = {tableName: 'Admin' , body: {}};
+var params       = {tableName: 'User' , body: {}};
 const mailer     = require('../config/mailer');
 
 function create(req, res) {

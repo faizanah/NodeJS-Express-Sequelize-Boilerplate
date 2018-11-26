@@ -1,11 +1,11 @@
-const Admin      = require('../models').Admin;
+const User      = require('../models').User;
 const bcrypt     = require('bcrypt');
 const salt       = bcrypt.genSaltSync(10);
 var async        = require('async');
 const crypto     = require('crypto');
 const db         = require('../config/db');
 const mailer     = require('../config/mailer');
-var params       = {tableName: 'Admin' , body: {}};
+var params       = {tableName: 'User' , body: {}};
 
 function create(req,res) {
     req.checkBody("email" , 'Enter a valid email address.').isEmail();
@@ -40,7 +40,7 @@ function create(req,res) {
             function (token, user, done) {
                 var mailOptions = {
                     to: user.email,
-                    subject: 'SEISMIC Invitation',
+                    subject: 'Node Invitation',
                     text: "Your account won't be created until you access the link below and set your password\n\n" +
                     'http://' + req.headers.host + '/users/invitations/' + user.invitation_token + '\n\n' +
                     "If you don't want to accept the invitation, please ignore this email.\n"
@@ -118,7 +118,7 @@ function generateInvitationLink(req , res) {
             function (token, user, done) {
                 var mailOptions = {
                     to: user.email,
-                    subject: 'SEISMIC Invitation',
+                    subject: 'Node Invitation',
                     text: "Your account won't be created until you access the link below and set your password\n\n" +
                     'http://' + req.headers.host + '/users/invitations/' + user.invitation_token + '\n\n' +
                     "If you don't want to accept the invitation, please ignore this email.\n"
