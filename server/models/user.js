@@ -157,7 +157,7 @@ module.exports = function(sequelize, DataTypes) {
           to: result.email,
           subject: 'Confirmation Instructions',
           text: "Activation link. \n\n" +
-          'http://example.com/users/invitations/' + result.confirmation_token + '\n\n'
+          'http://example.com/confirmations/' + result.confirmation_token + '\n\n'
         };
         mailer.sendMail(mailOptions, function (err) {
         });
@@ -197,6 +197,18 @@ module.exports = function(sequelize, DataTypes) {
       subject: 'Your password has been changed',
       text: 'Hello,\n\n' +
       'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
+    };
+    mailer.sendMail(mailOptions, function (err) {
+    });
+  };
+
+  User.prototype.sendConfirmationNotification = function sendConfirmationNotification(){
+    var user = this;
+    var mailOptions = {
+      to: user.email,
+      subject: 'Your account has been confirmation',
+      text: 'Hello,\n\n' +
+      'This is a confirmation that your email has been verified\n'
     };
     mailer.sendMail(mailOptions, function (err) {
     });

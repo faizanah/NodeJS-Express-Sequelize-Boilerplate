@@ -39,10 +39,10 @@ function login(req, res) {
     req.checkBody("password", "Password should be at least 6 chars long.").isLength({ min: 6 });
     const email     = req.body.email;
     const password  = req.body.password;
-    params.body =  {where: {email: email}}
+    params.body =  {where: {email: email, status: 'accepted'}};
     req.db.retrieve(req, res, params, function (user) {
       if (!user) {
-        return db.sendError({code: 404, message: 'Authentication failed. User not exist.'}, res)
+        return db.sendError({code: 404, message: 'Authentication failed. User not exist or not confirmed.'}, res)
       } else {
         if (user.authenticate(password)) {
           return res.status(200).send({
