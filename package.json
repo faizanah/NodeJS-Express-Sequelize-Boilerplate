@@ -11,6 +11,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npm run build:admin",
     "api": "nodemon ./bin/www",
+    "db:migrate": "node_modules/.bin/sequelize db:migrate",
     "deploy:heroku": "git push origin master && git push heroku master"
   },
   "keywords": [

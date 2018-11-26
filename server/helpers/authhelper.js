@@ -1,4 +1,4 @@
-const Admin      = require('../models').Admin;
+const User      = require('../models').User;
 const bcrypt  = require('bcrypt');
 const jwt     = require('jsonwebtoken');
 var env       = process.env.NODE_ENV || 'production';
@@ -15,12 +15,12 @@ function verifyJwtToken(req , res , next){
                 req.user = undefined;
                 next();
             }else {
-                Admin.findOne({where: {email: decode.email, id: decode.id}}).then(function (admin) {
-                    if (!admin) {
+                User.findOne({where: {email: decode.email, id: decode.id}}).then(function (user) {
+                    if (!user) {
                         req.user = undefined;
                         next();
                     } else {
-                        req.user = admin;
+                        req.user = user;
                         next();
                     }
                 }).catch(function (err) {
