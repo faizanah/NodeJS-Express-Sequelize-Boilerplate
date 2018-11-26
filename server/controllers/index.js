@@ -1,6 +1,6 @@
 var fs = require('fs');
 function getUrl(url) {
-  return '/api/admin' + url;
+  return '/api' + url;
 }
 var routes = {
   requireAuthentication: require('../helpers/authhelper').isAuthenticated,

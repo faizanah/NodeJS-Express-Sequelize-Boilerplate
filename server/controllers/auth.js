@@ -110,16 +110,15 @@ function login(req, res) {
     else {
         const email     = req.body.email;
         const password  = req.body.password;
-        User.findOne({where: {email: email}}).then(function (admin) {
-            if (!admin) {
+        User.findOne({where: {email: email}}).then(function (user) {
+            if (!user) {
                 return db.sendError({code: 404, message: 'Authentication failed. User not exist.'}, res)
             } else {
-                if (admin.authenticate(password)) {
+                if (user.authenticate(password)) {
                     return res.status(200).send({
                         success: true,
-                        user: admin,
-                        app_version: version,
-                        token: admin.generateJwtToken(),
+                        data: user,
+                        token: user.generateJwtToken(),
                         message: "Successfully login."
                     });
                 }
@@ -131,12 +130,31 @@ function login(req, res) {
     }
 }
 
+function signup(req, res) {
+
+  req.checkBody("email", "Enter a valid email address.").isEmail().isLength({ min: 3 , max: 100 });
+  req.checkBody("first_name", "First Name must be between 2 and 50 characters in length.").isLength({ min: 2 , max: 50 });
+  req.checkBody("first_name", "Last Name must be between 2 and 50 characters in length.").isLength({ min: 2 , max: 50 });
+  req.checkBody("password", "Password should be at least 6 chars long.").isLength({ min: 6 });
+  req.checkBody("role", "Role can't be blank.").isLength({ min: 3 });
+  console.log(JSON.stringify(req.body, null, 2));
+  params.body = {
+    first_name: req.body.first_name,
+    last_name: req.body.first_name,
+    password: req.body.password,
+    email: req.body.email,
+    role: req.body.role
+  };
+  return req.db.create(req , res , params);
+}
+
 function logout(req , res)
 {
     res.status(200).send({message: 'You are on the logout page'});
 }
 module.exports = {
     login: login,
+    signup: signup,
     logout: logout,
     reset: reset,
     verifyResetToken: verifyResetToken

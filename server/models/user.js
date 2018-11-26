@@ -5,7 +5,6 @@ const jwt     = require('jsonwebtoken');
 var env       = process.env.NODE_ENV || 'development';
 var config    = require(__dirname + '/../config/config.js')[env];
 var secret    = config.secret;
-
 const roles  = ['student', 'instructor'];
 module.exports = function(sequelize, DataTypes) {
   const User = sequelize.define("User", {
@@ -89,7 +88,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       type:   DataTypes.ENUM,
       values: roles,
-      defaultValue: 'user',
+      defaultValue: 'student',
       validate: {
         isIn: {
           args: [roles],
@@ -130,6 +129,12 @@ module.exports = function(sequelize, DataTypes) {
     user.email = user.email.toLowerCase();
     console.log(user.email);
   });
+
+  // // Method 3 via the direct method
+  // User.afterCreate((user, options){
+  //
+  // });
+
   User.prototype.authenticateResetPasswordToken = function authenticateResetPasswordToken(value) {
     if (bcrypt.compareSync(value, this.password))
       return this;

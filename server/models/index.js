@@ -6,16 +6,29 @@ var Sequelize = require('sequelize');
 var basename  = path.basename(module.filename);
 const env     = process.env.NODE_ENV || 'development';
 const config  = require(__dirname + '/../config/config.js')[env];
+console.log(JSON.stringify(config, null, 2));
 var db        = {};
-var sequelize = new Sequelize(config.database, config.username, config.password, {host: config.host, dialect: config.dialect});
-// var sequelize = new Sequelize("postgres://ybvebvqdkdquto:89578c33ad08094da9dccd0cf7d01d5744d53420695b83e88d81896b883e7d1d@ec2-50-17-203-51.compute-1.amazonaws.com:5432/dt9ck2qfe2esh",{
-//   dialect:  config.dialect,
-//   protocol: 'postgres',
-//   port:     5432,
-//   host:     config.host,
-//
-//   logging:  true //false
-// });
+const Op = Sequelize.Op;
+const sequelize = new Sequelize(
+  config.database,
+  config.username,
+  config.password,
+  {
+    host: config.host,
+    dialect: config.dialect,
+    logging: false,
+    freezeTableName: true,
+    operatorsAliases: {
+      $and: Op.and,
+      $or: Op.or,
+      $eq: Op.eq,
+      $gt: Op.gt,
+      $lt: Op.lt,
+      $lte: Op.lte,
+      $like: Op.like
+    }
+  }
+);
 
 sequelize.authenticate().then(function(){
     console.log("Connection has been established successfully to " + env + " environment.");
